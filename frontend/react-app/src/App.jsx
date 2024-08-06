@@ -1,4 +1,5 @@
 import './App.css'
+import Coins from './Components/Coins'
 
 function App() {
 
@@ -6,6 +7,7 @@ function App() {
     <>
       <div>
         <h1 className='text-3xl font-bold'>Today's Cryptocurrency prices by market cap</h1>
+        <Coins/>
       </div>
     </>
   )
