@@ -1,28 +1,32 @@
 import { useEffect, useState } from "react"
-import {io} from "socket.io-client"
+import { io } from "socket.io-client"
+import { toast } from "react-toastify"
 
 const Coins = () => {
     const [coins, getCoins] = useState([])
-    const fetchCoins = async () => {
-        let headers = {
-            "accept": "application/json"
-        }
-        let response = await fetch("http://localhost:4000/getcoins", {
-            mode: 'cors',
-            method: 'GET',
-            headers: headers
-        })
-        let data = await response.json()
-        return data
-    }
+    // const fetchCoins = async () => {
+    //     let headers = {
+    //         "accept": "application/json"
+    //     }
+    //     let response = await fetch("http://localhost:4000/getcoins", {
+    //         mode: 'cors',
+    //         method: 'GET',
+    //         headers: headers
+    //     })
+    //     let data = await response.json()
+    //     return data
+    // }
     useEffect(() => {
         const socket = io('http://localhost:4000')
-        // fetchCoins().then((res) => getCoins(res)).catch(err => console.log(err))
-        socket.on("res",(arg)=>{
-            console.log(arg)
+        socket.on("ack", (coins) => {
+            getCoins(coins)
         })
-        console.log("hello")
-    }, [])
+        socket.on("message",(msg)=>{
+            toast.success(msg,{
+                position:'top-center'
+            })
+        })
+    }, [getCoins,coins])
     return (
         <>
             <table className="table-auto border-slate-400 w-[95%] m-[20px_auto]">
