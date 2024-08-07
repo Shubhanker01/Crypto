@@ -3,7 +3,6 @@ import {io} from "socket.io-client"
 
 const Coins = () => {
     const [coins, getCoins] = useState([])
-    // const socket = io("http://localhost:4000")
     const fetchCoins = async () => {
         let headers = {
             "accept": "application/json"
@@ -17,11 +16,13 @@ const Coins = () => {
         return data
     }
     useEffect(() => {
-        fetchCoins().then((res) => getCoins(res)).catch(err => console.log(err))
-        // socket.on("hello",(arg)=>{
-        //     console.log(arg)
-        // })
-    }, [coins])
+        const socket = io('http://localhost:4000')
+        // fetchCoins().then((res) => getCoins(res)).catch(err => console.log(err))
+        socket.on("res",(arg)=>{
+            console.log(arg)
+        })
+        console.log("hello")
+    }, [])
     return (
         <>
             <table className="table-auto border-slate-400 w-[95%] m-[20px_auto]">
