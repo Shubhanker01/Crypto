@@ -4,27 +4,25 @@ import { toast } from "react-toastify"
 
 const Coins = () => {
     const [coins, getCoins] = useState([])
-    // const fetchCoins = async () => {
-    //     let headers = {
-    //         "accept": "application/json"
-    //     }
-    //     let response = await fetch("http://localhost:4000/getcoins", {
-    //         mode: 'cors',
-    //         method: 'GET',
-    //         headers: headers
-    //     })
-    //     let data = await response.json()
-    //     return data
-    // }
+    const fetchCoins = async () => {
+        let headers = {
+            "accept": "application/json"
+        }
+        let response = await fetch("http://localhost:4000/getcoins", {
+            mode: 'cors',
+            method: 'GET',
+            headers: headers
+        })
+        let data = await response.json()
+        return data
+    }
     useEffect(() => {
         const socket = io('http://localhost:4000')
-        socket.on("ack", (coins) => {
-            getCoins(coins)
+        socket.on("message",(arg)=>{
+            toast.info(arg,{position:'top-center'})
         })
-        socket.on("message",(msg)=>{
-            toast.success(msg,{
-                position:'top-center'
-            })
+        fetchCoins().then((res)=>{
+            getCoins(res)
         })
     }, [getCoins,coins])
     return (
